@@ -1,6 +1,6 @@
 
 
-local particle_count = 1000;
+local particle_count = 10000;
 
 local tex = texture {
     width = display_width;

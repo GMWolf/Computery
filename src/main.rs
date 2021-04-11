@@ -142,6 +142,8 @@ struct ScriptContext {
 
 fn int_to_format(int: u32) -> Option<wgpu::TextureFormat> {
     match int {
+        11 => Some(wgpu::TextureFormat::R32Uint),
+        13 => Some(wgpu::TextureFormat::R32Float),
         17 => Some(wgpu::TextureFormat::Rgba8Unorm),
         _ => None
     }
@@ -219,6 +221,8 @@ fn parse_lua(source: &str) -> rlua::Result<ScriptContext> {
         let globals = lua_ctx.globals();
 
         globals.set("rgba8", wgpu::TextureFormat::Rgba8Unorm as usize);
+        globals.set("r32ui", wgpu::TextureFormat::R32Uint as usize);
+        globals.set("r32f", wgpu::TextureFormat::R32Float as usize);
 
         lua_ctx.scope(|scope| {
             globals.set(
@@ -262,8 +266,8 @@ fn parse_lua(source: &str) -> rlua::Result<ScriptContext> {
                 })?,
             )?;
 
-            globals.set("display_width", 1280)?;
-            globals.set("display_height", 720)?;
+            globals.set("display_width", 1280 * 2)?;
+            globals.set("display_height", 720 * 2)?;
 
             lua_ctx.load(source).exec()
         })?;
